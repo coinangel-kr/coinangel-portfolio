@@ -357,6 +357,53 @@ export const PROJECTS: Project[] = [
 - **글자별 애니메이션**: Hero 섹션 이름 staggered 애니메이션
 - **프로젝트 필터링**: 카테고리별 프로젝트 필터
 - **SEO 최적화**: 메타데이터, OG 태그 설정
+- **보안 헤더**: XSS, Clickjacking 방지 헤더 적용
+
+---
+
+## 보안 설정
+
+이 프로젝트는 **security-reviewer 에이전트**를 사용하여 보안 검사를 완료했습니다.
+
+### 보안 검사 결과
+
+| 검사 항목 | 상태 |
+|----------|------|
+| 개인정보 노출 | 안전 (예시 데이터만 사용) |
+| API 키/시크릿 하드코딩 | 없음 |
+| .env 파일 커밋 | 없음 |
+| npm 취약점 | 없음 |
+| Git 히스토리 시크릿 | 없음 |
+
+### 적용된 보안 헤더
+
+`next.config.ts`에 다음 보안 헤더가 설정되어 있습니다:
+
+```typescript
+const securityHeaders = [
+  { key: "X-DNS-Prefetch-Control", value: "on" },
+  { key: "X-XSS-Protection", value: "1; mode=block" },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "origin-when-cross-origin" },
+];
+```
+
+| 헤더 | 설명 |
+|------|------|
+| X-XSS-Protection | XSS 공격 방지 |
+| X-Frame-Options | Clickjacking 방지 |
+| X-Content-Type-Options | MIME 타입 스니핑 방지 |
+| Referrer-Policy | 리퍼러 정보 제어 |
+
+### Security Checklist
+
+- [x] 하드코딩된 시크릿 없음
+- [x] XSS 방지 (React 기본 이스케이핑)
+- [x] HTTPS 사용 (Vercel 자동 적용)
+- [x] 민감한 파일 .gitignore에 포함
+- [x] npm 의존성 취약점 없음
+- [x] 개인정보 노출 없음
 
 ---
 
